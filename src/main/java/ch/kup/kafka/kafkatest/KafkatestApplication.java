@@ -1,13 +1,12 @@
 package ch.kup.kafka.kafkatest;
 
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.PartitionOffset;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.kafka.core.ConsumerFactory;
 
 @SpringBootApplication
 public class KafkatestApplication {
@@ -25,4 +24,28 @@ public class KafkatestApplication {
     }
 
 
+    @Bean
+    public PartitionFinder finder(ConsumerFactory<String, String> consumerFactory) {
+        return new PartitionFinder(consumerFactory);
+    }
+
+    public static class PartitionFinder {
+
+        public PartitionFinder(ConsumerFactory<String, String> consumerFactory) {
+            this.consumerFactory = consumerFactory;
+        }
+
+        private final ConsumerFactory<String, String> consumerFactory;
+
+        public String[] partitions(String topic) {
+            try (Consumer<String, String> consumer = consumerFactory.createConsumer()) {
+                return consumer.partitionsFor(topic).stream()
+                        .map(pi -> Integer.toString(pi.partition()))
+                        .toArray(String[]::new);
+            }
+        }
+
+    }
+
 }
+

@@ -14,7 +14,9 @@ public class MyTopicMirror {
 
     private final Queue<String> messages = new ConcurrentLinkedQueue<>();
 
-    @KafkaListener(topicPartitions = @TopicPartition(topic = "topic1", partitions = "0-2",
+    @KafkaListener(topicPartitions = @TopicPartition(
+            topic = "topic1",
+            partitions = "#{@finder.partitions('topic1')}",
             partitionOffsets = @PartitionOffset(partition = "*", initialOffset = "0")))
     public void listen(String in) {
         messages.add(in);
