@@ -17,7 +17,7 @@ public class MyRestController {
     private KafkaTemplate<String, String> template;
     @Autowired
     @Qualifier("topic1Mirror")
-    private TopicMirror myTopicMirror;
+    private TopicMirror<String, String> myTopicMirror;
 
     @GetMapping("/")
     public String hello() {

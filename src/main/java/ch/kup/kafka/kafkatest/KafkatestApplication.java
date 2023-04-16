@@ -24,8 +24,8 @@ public class KafkatestApplication {
     }
 
     @Bean
-    public TopicMirror topic1Mirror() {
-        return new TopicMirror("topic1");
+    public TopicMirror<String, String> topic1Mirror() {
+        return new TopicMirror<>("topic1");
     }
 
     @Bean
