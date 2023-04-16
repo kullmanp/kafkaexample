@@ -1,6 +1,7 @@
 package ch.kup.kafka.kafkatest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +16,8 @@ public class MyRestController {
     @Autowired
     private KafkaTemplate<String, String> template;
     @Autowired
-    private MyTopicMirror myTopicMirror;
+    @Qualifier("topic1Mirror")
+    private TopicMirror myTopicMirror;
 
     @GetMapping("/")
     public String hello() {

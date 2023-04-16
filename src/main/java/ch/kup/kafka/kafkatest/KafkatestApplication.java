@@ -23,6 +23,10 @@ public class KafkatestApplication {
                 .build();
     }
 
+    @Bean
+    public TopicMirror topic1Mirror() {
+        return new TopicMirror("topic1");
+    }
 
     @Bean
     public PartitionFinder finder(ConsumerFactory<String, String> consumerFactory) {
