@@ -5,7 +5,6 @@ spring:
   kafka:
     bootstrap-servers: localhost:29092
     consumer:
-      auto-offset-reset: earliest
       enable-auto-commit: false
 
     listener:

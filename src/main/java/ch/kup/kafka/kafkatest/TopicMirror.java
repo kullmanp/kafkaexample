@@ -2,7 +2,6 @@ package ch.kup.kafka.kafkatest;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.PartitionOffset;
 import org.springframework.kafka.annotation.TopicPartition;
 
 import java.util.Queue;
@@ -21,13 +20,14 @@ public class TopicMirror<K, V> {
 
     @KafkaListener(topicPartitions = @TopicPartition(
             topic = "#{__listener.topicName}",
-            partitions = "#{@finder.partitions(__listener.topicName)}",
-            partitionOffsets = @PartitionOffset(partition = "*", initialOffset = "0")))
+            partitions = "#{@finder.partitions(__listener.topicName)}"
+    ))
     public void listen(ConsumerRecord<K, V> consumerRecord) {
         messages.add(consumerRecord.value());
     }
 
     public String findMessages(String search) {
+        System.out.println(">>>>>>>>>>>>>>>>>> " + messages.size());
         return messages.stream()
                 .map(Object::toString)
                 .filter(s -> s.contains(search))
